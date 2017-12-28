@@ -23,14 +23,18 @@
                 <span v-for="w in text.daysOfWeek">{{w}}</span>
               </div>
               <div class="datepicker-dateRange">
-                <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
-                  <template v-if="d.sclass !== 'datepicker-item-gray'">
-                    {{getSpecailDay(d.date) || d.text}}
-                  </template>
-                  <template v-else>
-                      {{d.text}}
-                  </template>
-                  <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div>
+                <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)">
+                  <div>
+                    <template v-if="d.sclass !== 'datepicker-item-gray'">
+                      {{getSpecailDay(d.date) || d.text}}
+                    </template>
+                    <template v-else>
+                        {{d.text}}
+                    </template>
+                    <div v-if="d.sclass !== 'datepicker-item-gray'">
+                      <slot :name="stringify(d.date)"></slot>
+                    </div>
+                  </div>
                 </span>
               </div>
             </div>
@@ -85,6 +89,8 @@
 </template>
 
 <script>
+import getTranslation from 'utils/translations'
+
 function getTarget (node) {
   if (node === void 0) {
     node = document.body
@@ -312,7 +318,7 @@ export default {
   },
   computed: {
     text () {
-      return this.translations(this.lang)
+      return getTranslation(this.lang)
     },
     isWrapperShow () {
       return this.displayDayView || this.displayMonthView || this.displayYearView
@@ -389,20 +395,6 @@ export default {
         clazz.push('datepicker-item-disabled')
       }
       return clazz.join(' ')
-    },
-    translations (lang) {
-      lang = lang || 'en'
-      let text = {
-        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-        limit: 'Limit reached ({{limit}} items max).',
-        loading: 'Loading...',
-        minLength: 'Min. Length',
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        notSelected: 'Nothing Selected',
-        required: 'Required',
-        search: 'Search'
-      }
-      return window.VueCalendarLang ? window.VueCalendarLang(lang) : text
     },
     close () {
       this.displayDayView = this.displayMonthView = this.displayYearView = false

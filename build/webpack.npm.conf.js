@@ -28,7 +28,15 @@ function build(name) {
     resolve: {
       extensions: ['.js', '.vue'],
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+        'vue$': 'vue/dist/vue.esm.js',
+        'root': resolve(''),
+        '@': resolve('src'),
+        'src': resolve('src'),
+        'utils': resolve('src/utils'),
+        'assets': resolve('src/assets'),
+        'components': resolve('src/components'),
+        "bootstrap-sass$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss"),
+        "bootstrap-sprockets$": resolve("node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss")
       }
     },
     output: {
@@ -102,7 +110,8 @@ function build(name) {
           sourceMap: true
         }),
         new CopyWebpackPlugin([
-          { from: './src/components/Calendar.vue' }
+          { from: './src/components/Calendar.vue' },
+          { from: './src/utils/translations.js', to: 'utils/translations.js' }
         ])
       ]
     })
